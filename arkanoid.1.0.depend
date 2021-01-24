@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1611496924 source:e:\c\c задачі по книжці\arkanoid.1.0\main.c
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+	<string.h>
+	<math.h>
+

@@ -23,6 +23,7 @@ TRacket racket;
 TBall ball;
 int hitCnt  = 0;
 int maxHitCnt  = 0;
+int lv = 1;
 
 
 void initBall(){
@@ -93,7 +94,8 @@ void moveRacket(int x){
         racket.x = width - 1 -racket.w;
 }
 
-void init(){
+void init(int lv){
+
     for(int i = 0; i < width; i++)
         field[0][i] = '#';
 
@@ -103,22 +105,55 @@ void init(){
 
     for(int i = 1; i < width-1; i++)
         field[1][i] = ' ';
-
     for(int i = 2; i < height; i++)
         strncpy(field[i], field[1], width+1);
-    for(int i = 10; i < 20; i++)
-        field[9][i] = '#';
-    for(int i = 65; i < 80; i++)
-        field[16][i] = '#';
-    for(int i = 45; i < 55; i++)
-        field[3][i] = '#';
-    for(int i = 30; i < 35; i++)
-        field[7][i] = '#';
+    if(lv == 1){
+        for(int i = 5; i < 15; i++)
+            field[9][i] = '#';
+    }
+    else if( lv == 2){
+        for(int j = 5; j < 10; j++){
+            field[9][j] = '#';
+        }
+    }
+    else if( lv == 3){
+        for(int i = 65; i < 80; i++)
+            field[16][i] = '#';
+    }
+    else if(lv == 4){
+        for(int i = 45; i < 55; i++)
+            field[3][i] = '#';
+    }
+    else if(lv == 5){
+        for(int j = 5; j < 10; j++){
+            for(int i = 4; i < 82; i+=7)
+                field[j][i] = '#';
+        }
+        for(int j = 45; j < 65; j++){
+            field[9][j] = '#';
+        }
+        for(int j = 30; j < 40; j++){
+            field[3][j] = '#';
+        }
+        for(int j = 60; j < 85; j++){
+            field[15][j] = '#';
+        }
+        for(int j = 30; j < 50; j++){
+            field[12][j] = '#';
+        }
+        for(int j = 10; j < 20; j++){
+            field[15][j] = '#';
+            for(int i = 15; i < 20; i+=10)
+                field[j][i] = '#';
+        }
+    }
 }
 
 void show(){
     for(int i = 0; i < height; i++){
         printf("%s", field[i]);
+        if(i == 2)
+            printf("   Lev %i  ", lv);
         if(i == 3)
             printf("   hit %i   ", hitCnt);
         if(i == 4)
@@ -127,6 +162,12 @@ void show(){
             printf("\n");
     }
 
+}
+void showPreview(){
+    system("cls");
+    printf("\n\n\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t LEVEL %d", lv);
+    Sleep(1000);
+    system("cls");
 }
 void setcur(int x, int y){
     COORD coord;
@@ -140,6 +181,7 @@ int main()
     BOOL run = FALSE;
     initRacket();
     initBall();
+    showPreview();
     do{
     setcur(0,0);
     if(run) autoMoveBall();
@@ -149,7 +191,15 @@ int main()
             maxHitCnt = hitCnt;
         hitCnt = 0;
     }
-    init();
+    if(hitCnt > 5){
+        lv++;
+        run = FALSE;
+        maxHitCnt = 0;
+        hitCnt = 0;
+        showPreview();
+    }
+
+    init(lv);
     putRacket();
     putBall();
     show();
